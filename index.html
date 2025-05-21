@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Leitor de CSV</title>
+  <title>Leitor de Arquivos CSV e TXT</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h2>Importar arquivo CSV</h2>
-    <input type="file" id="csvFile" accept=".csv" />
+    <h2>Importar arquivo CSV ou TXT</h2>
+    <input type="file" id="csvFile" accept=".csv, .txt" />
     
     <!-- Área com rolagem horizontal para a tabela -->
     <div class="tabela-wrapper">
@@ -25,10 +25,20 @@
       reader.onload = function (event) {
         const text = event.target.result;
         const linhas = text.split('\n').map(l => l.trim()).filter(l => l);
-        const headers = linhas[0].split(';');
+
+        // Detectar automaticamente o delimitador
+        const firstLine = linhas[0];
+        let delimiter = firstLine.includes(';') ? ';' : (firstLine.includes(',') ? ',' : null);
+        
+        if (!delimiter) {
+          alert("O arquivo não possui delimitador válido (';' ou ',').");
+          return;
+        }
+
+        const headers = linhas[0].split(delimiter);
 
         const dados = linhas.slice(1).map(linha => {
-          const valores = linha.split(';');
+          const valores = linha.split(delimiter);
           return headers.reduce((obj, header, index) => {
             obj[header] = valores[index] || '';
             return obj;
@@ -37,6 +47,8 @@
 
         // Cria a tabela dinamicamente
         const tabela = document.createElement('table');
+        tabela.classList.add('tabela'); // Adiciona uma classe para estilo
+
         const thead = document.createElement('thead');
         const tbody = document.createElement('tbody');
 
@@ -50,24 +62,4 @@
 
         dados.forEach(item => {
           const row = document.createElement('tr');
-          headers.forEach(header => {
-            const td = document.createElement('td');
-            td.textContent = item[header];
-            row.appendChild(td);
-          });
-          tbody.appendChild(row);
-        });
-
-        tabela.appendChild(thead);
-        tabela.appendChild(tbody);
-
-        const output = document.getElementById('output');
-        output.innerHTML = '';
-        output.appendChild(tabela);
-      };
-
-      reader.readAsText(file);
-    });
-  </script>
-</body>
-</html>
+          headers.forEach(header =>
