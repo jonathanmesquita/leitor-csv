@@ -33,15 +33,31 @@ document.getElementById('csvFile').addEventListener('change', function (e) {
     const tbody = document.createElement('tbody');
 
     const headRow = document.createElement('tr');
+    
+    // Cria uma célula para o número da linha
+    const thLinhaNumero = document.createElement('th');
+    thLinhaNumero.textContent = 'Linha';
+    headRow.appendChild(thLinhaNumero);
+
+    // Cabeçalhos das colunas dos dados
     headers.forEach(header => {
       const th = document.createElement('th');
       th.textContent = header;
       headRow.appendChild(th);
     });
+
     thead.appendChild(headRow);
 
-    dados.forEach(item => {
+    // Preenche as linhas da tabela
+    dados.forEach((item, index) => {
       const row = document.createElement('tr');
+      
+      // Coloca o número da linha
+      const tdNumeroLinha = document.createElement('td');
+      tdNumeroLinha.textContent = index + 1;  // Começa a contagem de 1
+      tdNumeroLinha.classList.add('linha-numero');
+      row.appendChild(tdNumeroLinha);
+
       headers.forEach(header => {
         const td = document.createElement('td');
         td.textContent = item[header];
