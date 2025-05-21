@@ -17,49 +17,6 @@
     </div>
   </div>
 
-  <script>
-    document.getElementById('csvFile').addEventListener('change', function (e) {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-
-      reader.onload = function (event) {
-        const text = event.target.result;
-        const linhas = text.split('\n').map(l => l.trim()).filter(l => l);
-
-        // Detectar automaticamente o delimitador
-        const firstLine = linhas[0];
-        let delimiter = firstLine.includes(';') ? ';' : (firstLine.includes(',') ? ',' : null);
-        
-        if (!delimiter) {
-          alert("O arquivo não possui delimitador válido (';' ou ',').");
-          return;
-        }
-
-        const headers = linhas[0].split(delimiter);
-
-        const dados = linhas.slice(1).map(linha => {
-          const valores = linha.split(delimiter);
-          return headers.reduce((obj, header, index) => {
-            obj[header] = valores[index] || '';
-            return obj;
-          }, {});
-        });
-
-        // Cria a tabela dinamicamente
-        const tabela = document.createElement('table');
-        tabela.classList.add('tabela'); // Adiciona uma classe para estilo
-
-        const thead = document.createElement('thead');
-        const tbody = document.createElement('tbody');
-
-        const headRow = document.createElement('tr');
-        headers.forEach(header => {
-          const th = document.createElement('th');
-          th.textContent = header;
-          headRow.appendChild(th);
-        });
-        thead.appendChild(headRow);
-
-        dados.forEach(item => {
-          const row = document.createElement('tr');
-          headers.forEach(header =>
+  <script src="leitor.js"></script>
+</body>
+</html>
