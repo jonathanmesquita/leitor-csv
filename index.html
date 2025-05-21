@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leitor de CSV</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Importar arquivo CSV</h2>
+    <input type="file" id="csvFile" accept=".csv" />
+    
+    <!-- Área com rolagem horizontal para a tabela -->
+    <div class="tabela-wrapper">
+      <div id="output"></div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('csvFile').addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function (event) {
+        const text = event.target.result;
+        const linhas = text.split('\n').map(l => l.trim()).filter(l => l);
+        const headers = linhas[0].split(';');
+
+        const dados = linhas.slice(1).map(linha => {
+          const valores = linha.split(';');
+          return headers.reduce((obj, header, index) => {
+            obj[header] = valores[index] || '';
+            return obj;
+          }, {});
+        });
+
+        // Cria a tabela dinamicamente
+        const tabela = document.createElement('table');
+        const thead = document.createElement('thead');
+        const tbody = document.createElement('tbody');
+
+        const headRow = document.createElement('tr');
+        headers.forEach(header => {
+          const th = document.createElement('th');
+          th.textContent = header;
+          headRow.appendChild(th);
+        });
+        thead.appendChild(headRow);
+
+        dados.forEach(item => {
+          const row = document.createElement('tr');
+          headers.forEach(header => {
+            const td = document.createElement('td');
+            td.textContent = item[header];
+            row.appendChild(td);
+          });
+          tbody.appendChild(row);
+        });
+
+        tabela.appendChild(thead);
+        tabela.appendChild(tbody);
+
+        const output = document.getElementById('output');
+        output.innerHTML = '';
+        output.appendChild(tabela);
+      };
+
+      reader.readAsText(file);
+    });
+  </script>
+</body>
+</html>
