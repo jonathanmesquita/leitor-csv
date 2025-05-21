@@ -1,9 +1,10 @@
-/* Style geral para o body */
+/* Estilo geral para o body */
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f9;
   margin: 0;
   padding: 20px;
+  color: #333;
 }
 
 /* Container */
@@ -20,9 +21,24 @@ body {
 h2 {
   text-align: center;
   color: #333;
+  margin-bottom: 20px;
+}
+
+/* Estilo do input de upload */
+input[type="file"] {
+  display: block;
+  margin: 0 auto;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 /* Estilo da tabela */
+.tabela-wrapper {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
 .tabela {
   width: 100%;
   border-collapse: collapse;
@@ -41,15 +57,13 @@ h2 {
 }
 
 .tabela tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #f9f9f9;
 }
 
-.tabela-wrapper {
-  overflow-x: auto;
-  margin-top: 20px;
+.tabela td {
+  white-space: nowrap;
 }
 
-/* Coluna de contagem de linhas */
 .tabela .linha-numero {
   width: 50px;
   text-align: right;
