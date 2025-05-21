@@ -48,3 +48,11 @@ h2 {
   overflow-x: auto;
   margin-top: 20px;
 }
+
+/* Coluna de contagem de linhas */
+.tabela .linha-numero {
+  width: 50px;
+  text-align: right;
+  background-color: #f1f1f1;
+  font-weight: bold;
+}
